@@ -1,0 +1,33 @@
+agents:
+    # Size in meters of markers side => all markers should have same dimension
+    marker_size: 0.115
+
+    expected_ids:
+    - 1
+
+structures:
+    # Size in meters of markers side => all markers should have same dimension
+    marker_size: 0.115
+
+    #-> A list containing structure IDs of a same wall sequence
+    #-? An ID is assumed to exist in only one sequence
+    wall_sequences: 
+    - [1, 2, 3]
+    - [4, 5, 6]
+
+objects:
+    # Size in meters of markers side => all markers should have same dimension
+    marker_size: 0.115
+
+    #-> Dict associating object IDs an object shapes
+    #-? This assumes all objects have a brick shape (parameters are L, W, H)
+    #-? The dict keys are used as list of expected objects IDs
+    shapes: {
+        "1" : {L: 0.23, W: 0.175, H: 0.15},
+        "2" : {L: 0.23, W: 0.30, H: 0.12},
+        "3" : {L: 0.23, W: 0.22, H: 0.08},
+        "3" : {L: 0.23, W: 0.175, H: 0.15},
+        "4" : {L: 0.23, W: 0.30, H: 0.12},
+        "5" : {L: 0.23, W: 0.22, H: 0.08},
+        "6" : {L: 0.40, W: 0.31, H: 0.11}
+    }
