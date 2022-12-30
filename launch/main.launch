@@ -3,20 +3,20 @@
   <machine name="robot" address="ip" env-loader="$(arg robot_ws)/src/diffy/envloader.sh" default="never" user="user" password="password"/>
   <machine name="station" address="localhost" env-loader="~/.bashrc" default="true"/>
   
-  <param name="/robotlab/world" type="yaml" textfile="$(find robotlab)/launch/world_params.yaml"/>
+  <param name="/robotlab/world" type="yaml" textfile="$(find station)/launch/world_params.yaml"/>
 
   <group ns="measurement">
-    <node machine="robot" pkg="diffy" type="recorder.py" name="recorder" respawn="false" required="true" output="log" args="-o rgb_images.tar.gz -t 1"/>
+    <node machine="robot" pkg="diffy" type="recorder.py" name="recorder" respawn="false" required="false" output="log" args="-o rgb_images.tar.gz -t 1"/>
   </group>
 
   <!-- <group ns="robot_control">
-    <node pkg="robotlab" type="controller.py" name="controller" required="true" output="screen"/>
+    <node pkg="station" type="controller.py" name="controller" required="true" output="screen"/>
     <node pkg="rospowerboard" type="teleop-client.py" name="client" required="true" output="log" args="1"/>
     <node machine="robot" pkg="rospowerboard" type="powerboard.py" name="motors" respawn="true" output="log" args="110"/>
   </group> -->
 
   <group ns="ground_truth">
-    <!-- <node pkg="robotlab" type="camera.py" name="camera" respawn="false" required="true" output="log" args="-d"/> -->
+    <!-- <node pkg="station" type="camera.py" name="camera" respawn="false" required="true" output="log" args="-d"/> -->
     <!-- <node pkg="nodelet" type="nodelet" name="realsense2_camera_manager" required="false" respawn="false" output="log" args="manager"/> -->
     <!-- <node pkg="nodelet" type="nodelet" name="realsense2_camera" required="false" respawn="false" args="load realsense2_camera/RealSenseNodeFactory realsense2_camera_manager">
       <param name="serial_no"                type="str"  value=""/>
@@ -121,11 +121,11 @@
       <param name="wait_for_device_timeout"  type="double" value="-1.0"/>
       <param name="unite_imu_method"         type="str"    value=""/>
     </node> -->
-    <!-- <node pkg="robotlab" type="detector.py" name="detector" respawn="false" required="true" output="screen" args="-d"/> -->
+    <!-- <node pkg="station" type="detector.py" name="detector" respawn="false" required="true" output="screen" args="-d"/> -->
   </group>
 
   <group ns="visuals">
-    <!-- <node pkg="robotlab" type="display.py" name="display" respawn="false" output="log" required="true"/> -->
-    <!-- <node pkg="robotlab" type="start.sh" name="server_starter" respawn="false" required="true" output="screen" args="$(find robotlab)/scripts"/> -->
+    <!-- <node pkg="station" type="display.py" name="display" respawn="false" output="log" required="true"/> -->
+    <!-- <node pkg="station" type="start.sh" name="server_starter" respawn="false" required="true" output="screen" args="$(find station)/scripts"/> -->
   </group>
 </launch>

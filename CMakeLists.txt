@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(robotlab)
+project(station)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -101,7 +101,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES robotlabs
+#  LIBRARIES stations
 #  CATKIN_DEPENDS message_runtime
 #  DEPENDS system_lib
 )
@@ -119,7 +119,7 @@ catkin_package(
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/robotlab.cpp
+#   src/${PROJECT_NAME}/station.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -130,7 +130,7 @@ catkin_package(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/robotlab_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/station_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -158,7 +158,6 @@ catkin_package(
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(
   PROGRAMS
-    scripts/camera.py
     scripts/detector.py
     scripts/display.py
     scripts/controller.py
@@ -200,7 +199,7 @@ catkin_install_python(
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_robotlab.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_station.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

@@ -28,95 +28,95 @@ def callback_image(image_msg: Image, argv: tuple):
         rospy.loginfo(f"---------- Recieved an image. Starting markers detection. ----------")
 
     image_cv = bridge.imgmsg_to_cv2(image_msg, desired_encoding='bgr8')
-    # observed_agents_markers, observed_agents_ids, _ = cv2.aruco.detectMarkers(image_cv, agents_dict, parameters=aruco_params)
-    # observed_structure_markers, observed_structure_ids, _ = cv2.aruco.detectMarkers(image_cv, structure_dict, parameters=aruco_params)
+    observed_agents_markers, observed_agents_ids, _ = cv2.aruco.detectMarkers(image_cv, agents_dict, parameters=aruco_params)
+    observed_structure_markers, observed_structure_ids, _ = cv2.aruco.detectMarkers(image_cv, structure_dict, parameters=aruco_params)
     observed_objects_markers, observed_objects_ids, _ = cv2.aruco.detectMarkers(image_cv, objects_dict, parameters=aruco_params)
 
     #-> Agents pose broadcasting
-    # if type(observed_agents_ids) is not type(None):
-    #     if config.display:
-    #         image_cv = cv2.aruco.drawDetectedMarkers(image_cv, observed_agents_markers, observed_agents_ids)
+    if type(observed_agents_ids) is not type(None):
+        if config.display:
+            image_cv = cv2.aruco.drawDetectedMarkers(image_cv, observed_agents_markers, observed_agents_ids)
 
-    #     #-? 'agents_ids' is the list of observed agents ids
-    #     observed_agents_ids = [id[0] for id in list(observed_agents_ids)]
+        #-? 'agents_ids' is the list of observed agents ids
+        observed_agents_ids = [id[0] for id in list(observed_agents_ids)]
 
-    #     if config.verbose:
-    #         rospy.loginfo("Found following agents IDs in the image: " + str(observed_agents_ids) + ".")
+        if config.verbose:
+            rospy.loginfo("Found following agents IDs in the image: " + str(observed_agents_ids) + ".")
 
-    #     for idx in range(len(expected_agents_ids)):
-    #         #-? 'id' iterates over all expected agents ids
-    #         id = expected_agents_ids[idx][0]
+        for idx in range(len(expected_agents_ids)):
+            #-? 'id' iterates over all expected agents ids
+            id = expected_agents_ids[idx][0]
             
-    #         #-> If expected ID is not found in image, use its last pose
-    #         if id not in observed_agents_ids:
-    #             if config.verbose:
-    #                 rospy.loginfo(f"Agent ID {id} not found in image, sending its last transform.")
+            #-> If expected ID is not found in image, use its last pose
+            if id not in observed_agents_ids:
+                if config.verbose:
+                    rospy.loginfo(f"Agent ID {id} not found in image, sending its last transform.")
 
-    #             TCM = expected_agents_ids[idx][1]
-    #             TCM_pq = ptf.pq_from_transform(TCM)
-    #             tvec, qvec = TCM_pq[:3], np.roll(TCM_pq[3:], -1)
-    #             broadcaster.sendTransform(tvec, qvec, rospy.Time.now(), f"/agent_{id}", "/camera_color_optical_frame")
+                TCM = expected_agents_ids[idx][1]
+                TCM_pq = ptf.pq_from_transform(TCM)
+                tvec, qvec = TCM_pq[:3], np.roll(TCM_pq[3:], -1)
+                broadcaster.sendTransform(tvec, qvec, rospy.Time.now(), f"/agent_{id}", "/camera_color_optical_frame")
 
-    #         #-> Else, update its pose
-    #         else:
-    #             marker = observed_agents_markers[observed_agents_ids.index(id)]
-    #             rvec, tvec, _ = cv2.aruco.estimatePoseSingleMarkers(marker, agents_marker_size, K, D)
-    #             R, _ = cv2.Rodrigues(rvec)
-    #             TCM = ptf.transform_from(R, tvec)
-    #             expected_agents_ids[idx][1] = TCM
+            #-> Else, update its pose
+            else:
+                marker = observed_agents_markers[observed_agents_ids.index(id)]
+                rvec, tvec, _ = cv2.aruco.estimatePoseSingleMarkers(marker, agents_marker_size, K, D)
+                R, _ = cv2.Rodrigues(rvec)
+                TCM = ptf.transform_from(R, tvec)
+                expected_agents_ids[idx][1] = TCM
             
-    #             if config.verbose:
-    #                 rospy.loginfo(f"Estimated transformation of agent ID {id}\n" + str(TCM))
+                if config.verbose:
+                    rospy.loginfo(f"Estimated transformation of agent ID {id}\n" + str(TCM))
 
-    #             if config.display:
-    #                 image_cv = cv2.drawFrameAxes(image_cv, K, D, rvec, tvec, agents_marker_size/2)
+                if config.display:
+                    image_cv = cv2.drawFrameAxes(image_cv, K, D, rvec, tvec, agents_marker_size/2)
 
-    #             TCM_pq = ptf.pq_from_transform(TCM)
-    #             tvec, qvec = TCM_pq[:3], np.roll(TCM_pq[3:], -1)
-    #             broadcaster.sendTransform(tvec, qvec, rospy.Time.now(), f"/agent_{id}", "/camera_color_optical_frame")
+                TCM_pq = ptf.pq_from_transform(TCM)
+                tvec, qvec = TCM_pq[:3], np.roll(TCM_pq[3:], -1)
+                broadcaster.sendTransform(tvec, qvec, rospy.Time.now(), f"/agent_{id}", "/camera_color_optical_frame")
 
     #-> Structure pose broadcasting
-    # if type(observed_structure_ids) is not type(None):
-    #     if config.display:
-    #         image_cv = cv2.aruco.drawDetectedMarkers(image_cv, observed_structure_markers, observed_structure_ids)
+    if type(observed_structure_ids) is not type(None):
+        if config.display:
+            image_cv = cv2.aruco.drawDetectedMarkers(image_cv, observed_structure_markers, observed_structure_ids)
 
-    #     #-? 'structure_ids' is the list of observed structure ids
-    #     observed_structure_ids = [id[0] for id in list(observed_structure_ids)]
+        #-? 'structure_ids' is the list of observed structure ids
+        observed_structure_ids = [id[0] for id in list(observed_structure_ids)]
 
-    #     if config.verbose:
-    #         rospy.loginfo("Found following structure IDs in the image: " + str(observed_structure_ids) + ".")
+        if config.verbose:
+            rospy.loginfo("Found following structure IDs in the image: " + str(observed_structure_ids) + ".")
         
-    #     for idx in range(len(expected_structure_ids)):
-    #         #-? 'id' iterates over all expected structure ids
-    #         id = expected_structure_ids[idx][0]
+        for idx in range(len(expected_structure_ids)):
+            #-? 'id' iterates over all expected structure ids
+            id = expected_structure_ids[idx][0]
             
-    #         #-> If expected ID is not found in image, use its last pose
-    #         if id not in observed_structure_ids:
-    #             if config.verbose:
-    #                 rospy.loginfo(f"Structure ID {id} not found in image, sending last transform.")
+            #-> If expected ID is not found in image, use its last pose
+            if id not in observed_structure_ids:
+                if config.verbose:
+                    rospy.loginfo(f"Structure ID {id} not found in image, sending last transform.")
 
-    #             TCM = expected_structure_ids[idx][1]
-    #             TCM_pq = ptf.pq_from_transform(TCM)
-    #             tvec, qvec = TCM_pq[:3], np.roll(TCM_pq[3:], -1)
-    #             broadcaster.sendTransform(tvec, qvec, rospy.Time.now(), f"/structure_{id}", "/camera_color_optical_frame")
+                TCM = expected_structure_ids[idx][1]
+                TCM_pq = ptf.pq_from_transform(TCM)
+                tvec, qvec = TCM_pq[:3], np.roll(TCM_pq[3:], -1)
+                broadcaster.sendTransform(tvec, qvec, rospy.Time.now(), f"/structure_{id}", "/camera_color_optical_frame")
 
-    #         #-> Else, update its pose
-    #         else:
-    #             marker = observed_structure_markers[observed_structure_ids.index(id)]
-    #             rvec, tvec, _ = cv2.aruco.estimatePoseSingleMarkers(marker, structure_marker_size, K, D)
-    #             R, _ = cv2.Rodrigues(rvec)
-    #             TCM = ptf.transform_from(R, tvec)
-    #             expected_structure_ids[idx][1] = TCM
+            #-> Else, update its pose
+            else:
+                marker = observed_structure_markers[observed_structure_ids.index(id)]
+                rvec, tvec, _ = cv2.aruco.estimatePoseSingleMarkers(marker, structure_marker_size, K, D)
+                R, _ = cv2.Rodrigues(rvec)
+                TCM = ptf.transform_from(R, tvec)
+                expected_structure_ids[idx][1] = TCM
             
-    #             if config.verbose:
-    #                 rospy.loginfo(f"Estimated transformation of structure ID {id}\n" + str(TCM))
+                if config.verbose:
+                    rospy.loginfo(f"Estimated transformation of structure ID {id}\n" + str(TCM))
 
-    #             if config.display:
-    #                 image_cv = cv2.drawFrameAxes(image_cv, K, D, rvec, tvec, structure_marker_size/2)
+                if config.display:
+                    image_cv = cv2.drawFrameAxes(image_cv, K, D, rvec, tvec, structure_marker_size/2)
 
-    #             TCM_pq = ptf.pq_from_transform(TCM)
-    #             tvec, qvec = TCM_pq[:3], np.roll(TCM_pq[3:], -1)
-    #             broadcaster.sendTransform(tvec, qvec, rospy.Time.now(), f"/structure_{id}", "/camera_color_optical_frame")
+                TCM_pq = ptf.pq_from_transform(TCM)
+                tvec, qvec = TCM_pq[:3], np.roll(TCM_pq[3:], -1)
+                broadcaster.sendTransform(tvec, qvec, rospy.Time.now(), f"/structure_{id}", "/camera_color_optical_frame")
     
     #-> Objects pose broadcasting
     if type(observed_objects_ids) is not type(None):
@@ -219,7 +219,7 @@ def main():
     if config.verbose:
         rospy.loginfo("Retrieved lists of expected ids.")
 
-    #-> Launch realsense color image subcriber
+    #-> Launch color image subcriber
     rospy.Subscriber("color/image_raw", Image, callback_image, (aruco_dicts, aruco_params, marker_sizes, K, D), queue_size=1)
     if config.verbose:
         rospy.loginfo("Pubs/Subs started.")

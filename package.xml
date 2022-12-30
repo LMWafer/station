@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>robotlab</name>
+  <name>station</name>
   <version>0.0.0</version>
-  <description>The robotlab package</description>
+  <description>The station package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/robotlab</url> -->
+  <!-- <url type="website">http://wiki.ros.org/station</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
