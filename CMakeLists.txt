@@ -158,6 +158,7 @@ catkin_package(
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(
   PROGRAMS
+    scripts/recorder.py
     scripts/detector.py
     scripts/display.py
     scripts/controller.py
